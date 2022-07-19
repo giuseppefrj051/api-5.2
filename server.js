@@ -4,8 +4,8 @@ const app = express();
 const mongoose = require('mongoose');
 const Sensors = require('./models/sensors');
 
-mongoose.connect("mongodb+srv://giuseppe051:Glhj1877@cluster0.swird.mongodb.net/?retryWrites=true&w=majority");
-//mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
+
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
 const db =  mongoose.connection;
 db.on('error', (error) => console.error(error));
 db.once('open', () => console.log('Connected to database'));
