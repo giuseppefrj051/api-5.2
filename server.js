@@ -15,11 +15,13 @@ db.once('open', () => console.log('Connected to database'));
 app.use(express.json());
 
 const sensorsRouter = require('./routes/sensors');
-app.use('/sensors', sensorsRouter);
+
 
  
 const port = process.env.PORT || 3000;
 var server = app.listen(port, listening);
+app.use('/sensors', sensorsRouter);
+app.use(express.static('web'));
 
 function listening() {
     console.log(`listening at port ${port} ...`);
@@ -27,7 +29,7 @@ function listening() {
 
 //const port = process.env.PORT || 3000;
 //app.listen(port, () => console.log('server listening on port ', port));
-app.use(express.static('web'));
+
 
 autoRun();
 
