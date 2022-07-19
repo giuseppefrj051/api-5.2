@@ -17,10 +17,15 @@ const sensorsRouter = require('./routes/sensors');
 app.use('/sensors', sensorsRouter);
 
  
-
-
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log('server listening on port ', port));
+var server = app.listen(port, listening);
+
+function listening() {
+    console.log(`listening at port ${port} ...`);
+}
+
+//const port = process.env.PORT || 3000;
+//app.listen(port, () => console.log('server listening on port ', port));
 //app.use(express.static('web'));
 
 autoRun();
