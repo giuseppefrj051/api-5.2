@@ -4,7 +4,6 @@ const app = express();
 const mongoose = require('mongoose');
 const Sensors = require('./models/sensors');
 
-
 mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
 const db =  mongoose.connection;
 db.on('error', (error) => console.error(error));
