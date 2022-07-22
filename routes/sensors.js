@@ -52,6 +52,7 @@ router.get('/:id/:value', getSensors, async (req, res) => {
   if (req.body.unit != null) {
     res.sensors.unit = req.body.unit
   }
+
   try {
     const updatedSensor = await res.sensors.save()
     res.json(updatedSensor)
@@ -98,6 +99,15 @@ router.patch('/:id', getSensors, async (req, res) => {
   }
   if (req.body.unit != null) {
     res.sensors.unit = req.body.unit
+  }
+  if (req.body.status != null) {
+    res.sensors.status = req.body.status
+  }
+  if (req.body.highAlarm != null) {
+    res.sensors.highAlarm = req.body.highAlarm
+  }
+  if (req.body.lowAlarm != null) {
+    res.sensors.lowAlarm = req.body.lowAlarm
   }
   try {
     const updatedSensor = await res.sensors.save()

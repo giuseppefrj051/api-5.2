@@ -1,4 +1,13 @@
 //https://api-5-2.herokuapp.com/sensors
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+  service: 'hotmail',
+  auth: {
+    user: 'local.engineer.uk@outlook.com',
+    pass: 'Glhj18770'
+  }
+});
 
 require('dotenv').config();
 const express = require('express');
@@ -35,7 +44,7 @@ function listening() {
 autoRun();
 
 function autoRun() {
-    setInterval(callAllAutoFunc, 5000);
+    setInterval(callAllAutoFunc, 30000);
   };
   
   
@@ -81,13 +90,47 @@ async function get2nd(){
     var dataLowAlarm = sensors.lowAlarm;
     
     if(dataValue > dataHighAlarm){
-      console.log('High Alarm', dataValue,dataUnit , 'on', dataName)
+      var varMessage = 'The Boiler is running at ';
+      console.log(varMessage, dataValue,dataUnit , 'on the reader', dataName);
+      var mailOptions = {
+        from: 'local.engineer.uk@outlook.com',
+        to: 'giuseppefrj051@gmail.com',
+        subject: 'BMS Notification',
+        text: varMessage + dataValue + '' + dataUnit + ' on the reader ' +dataName
+      };
+      emailAlarm(mailOptions);
     }
     if(dataValue < dataLowAlarm){
-      console.log('low Alarm', dataValue,dataUnit , 'on', dataName)
+      var varMessage = 'Boiler temp low running at ';
+      console.log(varMessage, dataValue,dataUnit , 'on the reader', dataName);
+      var mailOptions = {
+        from: 'local.engineer.uk@outlook.com',
+        to: 'giuseppefrj051@gmail.com',
+        subject: 'BMS Notification',
+        text: varMessage + dataValue + '' + dataUnit + ' on the reader ' +dataName
+      };
+      emailAlarm(mailOptions);
     }
   } catch (err) {
       console.log(500).json({message: err.message})
   }
 };
+
+
+
+
+
+function emailAlarm(mailOptions){
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+};
+
+
+
 
