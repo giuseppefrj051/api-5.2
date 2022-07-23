@@ -102,7 +102,7 @@ async function get2nd(){
         subject: 'BMS Notification',
         text: varMessage + dataValue + '' + dataUnit + ' on the reader ' +dataName
       };
-      //emailAlarm(mailOptions);
+      emailAlarm(mailOptions);
     }
   } catch (err) {
       console.log(500).json({message: err.message})
