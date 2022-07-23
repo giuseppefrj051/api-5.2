@@ -37,27 +37,16 @@ function listening() {
     console.log(`listening at port ${port} ...`);
 }
 
-//const port = process.env.PORT || 3000;
-//app.listen(port, () => console.log('server listening on port ', port));
 
-
-autoRun();
-
+//alarm script every 2 mins
 function autoRun() {
-    setInterval(callAllAutoFunc, 30000);
+    setInterval(callAllAutoFunc, 120000);
   };
-  
-  
-
-
-
 function callAllAutoFunc() {
   getFirst();
   get2nd();
 }
-
-
-
+autoRun();
 
 async function getFirst(){
   try{
@@ -115,10 +104,6 @@ async function get2nd(){
       console.log(500).json({message: err.message})
   }
 };
-
-
-
-
 
 function emailAlarm(mailOptions){
   

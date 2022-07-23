@@ -55,8 +55,7 @@ router.get('/:id/:value', getSensors, async (req, res) => {
 
   try {
     const updatedSensor = await res.sensors.save()
-    res.json(updatedSensor)
-    console.log(updatedSensor);
+    res.json(updatedSensor);
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
