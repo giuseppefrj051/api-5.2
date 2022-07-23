@@ -37,7 +37,8 @@ function listening() {
     console.log(`listening at port ${port} ...`);
 }
 
-
+const esp32_0001 = '62db51a4ea4135734b210883';
+const esp8266_0001 = '62db51e8ea4135734b210886';
 //alarm script every 2 mins
 function autoRun() {
     setInterval(callAllAutoFunc, 120000);
@@ -50,17 +51,19 @@ autoRun();
 
 async function getFirst(){
   try{
-    const sensors = await Sensors.findById('62d71c6f6b02ab26fdca3ed7');
+    const sensors = await Sensors.findById(esp32_0001);
     var dataValue = sensors.value;
     var dataName = sensors.name;
     var dataUnit = sensors.unit;
     var dataHighAlarm = sensors.highAlarm;
     var dataLowAlarm = sensors.lowAlarm;
+    var dataAlarmAct = sensors.alarmAct;
+
     
-    if(dataValue > dataHighAlarm){
+    if(dataValue > dataHighAlarm && dataAlarmAct == true){
       console.log('High Alarm', dataValue,dataUnit , 'on', dataName)
     }
-    if(dataValue < dataLowAlarm){
+    if(dataValue < dataLowAlarm && dataAlarmAct == true){
       console.log('low Alarm', dataValue,dataUnit , 'on', dataName)
     }
   } catch (err) {
@@ -71,14 +74,15 @@ async function getFirst(){
 
 async function get2nd(){
   try{
-    const sensors = await Sensors.findById('62d71cdebe9c928878fec826');
+    const sensors = await Sensors.findById(esp8266_0001);
     var dataValue = sensors.value;
     var dataName = sensors.name;
     var dataUnit = sensors.unit;
     var dataHighAlarm = sensors.highAlarm;
     var dataLowAlarm = sensors.lowAlarm;
+    var dataAlarmAct = sensors.alarmAct;
     
-    if(dataValue > dataHighAlarm){
+    if(dataValue > dataHighAlarm && dataAlarmAct == true){
       var varMessage = 'The Boiler is running at ';
       console.log(varMessage, dataValue,dataUnit , 'on the reader', dataName);
       var mailOptions = {
@@ -89,8 +93,8 @@ async function get2nd(){
       };
       emailAlarm(mailOptions);
     }
-    if(dataValue < dataLowAlarm){
-      var varMessage = 'Boiler temp low running at ';
+    if(dataValue < dataLowAlarm && dataAlarmAct == true){
+      var varMessage = 'Boiler temp low running at '; 
       console.log(varMessage, dataValue,dataUnit , 'on the reader', dataName);
       var mailOptions = {
         from: 'local.engineer.uk@outlook.com',
@@ -98,12 +102,12 @@ async function get2nd(){
         subject: 'BMS Notification',
         text: varMessage + dataValue + '' + dataUnit + ' on the reader ' +dataName
       };
-      emailAlarm(mailOptions);
+      //emailAlarm(mailOptions);
     }
   } catch (err) {
       console.log(500).json({message: err.message})
   }
-};
+}; 
 
 function emailAlarm(mailOptions){
   

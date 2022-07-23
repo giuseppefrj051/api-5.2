@@ -29,6 +29,10 @@ const sensorsSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    alarmAct: {
+        type: Boolean,
+        required: true
+    }
 });
 
 module.exports = mongoose.model('sensors', sensorsSchema); 

@@ -11,7 +11,6 @@ router.get('/', async (req, res) => {
         res.status(500).json({message: err.message})
     }
     //http://localhost:3000/sensors
-    //res.send('this is the router Get all')
 });
 
 
@@ -21,13 +20,9 @@ router.get('/:id', getSensors, (req, res) => {
     var dataValue = res.sensors.value
     var nameDb = res.sensors.name
     var dataId = req.params.id
-
-    if(dataValue > 8){
-      console.log('High alarm, the pressure is ' , dataValue , 'for the ID= ', dataId , ' Named= ', nameDb)
-    } else {
-      console.log('The device ', nameDb, 'has been reached ID= ', dataId)
-    }
-    //console.log(dataValue); //this is getting just one bit o the object
+    console.log('The device ', nameDb, 'has been reached ID= ', dataId)
+    
+    
   
 });
 
@@ -72,7 +67,8 @@ router.post('/', async (req, res) => {
         unit: req.body.unit,
         status: req.body.status,
         highAlarm: req.body.highAlarm,
-        lowAlarm: req.body.lowAlarm
+        lowAlarm: req.body.lowAlarm,
+        alarmAct: req.body.alarmAct
     })
     try{
         const newSensor = await sensors.save();
@@ -107,6 +103,9 @@ router.patch('/:id', getSensors, async (req, res) => {
   }
   if (req.body.lowAlarm != null) {
     res.sensors.lowAlarm = req.body.lowAlarm
+  }
+  if (req.body.alarmAct != null) {
+    res.sensors.alarmAct = req.body.alarmAct
   }
   try {
     const updatedSensor = await res.sensors.save()
