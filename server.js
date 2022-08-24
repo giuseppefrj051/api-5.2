@@ -37,9 +37,9 @@ function listening() {
 
 const esp32_0001 = '62db51a4ea4135734b210883';
 const esp8266_0001 = '62db51e8ea4135734b210886';
-//alarm script every 2 mins
+//alarm script every 5 mins
 function autoRun() {
-    setInterval(callAllAutoFunc, 30000);
+    setInterval(callAllAutoFunc, 300000);
   };
 function callAllAutoFunc() {
   FistAlarm();
