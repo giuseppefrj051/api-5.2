@@ -11,7 +11,7 @@ const sensorsSchema = new mongoose.Schema({
     },
     value: {
         type: Number,
-        required: true
+        required: false
     },
     unit: {
         type: String,

@@ -20,17 +20,13 @@ router.get('/:id', getSensors, (req, res) => {
     var dataValue = res.sensors.value
     var nameDb = res.sensors.name
     var dataId = req.params.id
-    console.log('The device ', nameDb, 'has been reached ID= ', dataId)
-    
-    
+    console.log('The device ', nameDb, 'has been reached ID= ', dataId)   
   
 });
 
 //update througt GET method
-
 //http://localhost:3000/sensors/62d71c6f6b02ab26fdca3ed7/4.2
 //http://localhost:3000/sensors/62d71cdebe9c928878fec826/56.6
-
 router.get('/:id/:value', getSensors, async (req, res) => {
   var dataValue = Number(req.params.value)
   var dataId = req.params.id
@@ -54,11 +50,43 @@ router.get('/:id/:value', getSensors, async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
-
 });
 
 
-//create one
+//UPDATING BY POST REQUEST
+router.post('/update', postUpdate, async (req, res) => {
+  var dataHighAlarm = Number(req.body.highAlarm)
+  var dataAlarmAct = Boolean(req.body.alarmAct)
+  if (dataHighAlarm != null) {
+    res.sensors.highAlarm = dataHighAlarm
+  }
+  if (dataAlarmAct != null) {
+    res.sensors.alarmAct = dataAlarmAct
+  }
+  try {
+    const updatedSensor = await res.sensors.save()
+    res.status(204).send()
+  } catch (err) {
+    res.status(400).json({ message: err.message })
+  }
+});
+
+async function postUpdate(req, res, next) {
+  let sensors
+  try {
+    sensors = await Sensors.findById(req.body.id)
+    if (sensors == null) {
+      return res.status(404).json({ message: 'Cannot find this ID' })
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+  res.sensors = sensors
+  next()
+}
+
+
+//create one 
 router.post('/', async (req, res) => {
     const sensors = new Sensors({
         name: req.body.name,
@@ -127,8 +155,6 @@ router.delete('/:id', getSensors, async (req, res) => {
 
 
 
-
-
 async function getSensors(req, res, next) {
     let sensors
     try {
@@ -143,6 +169,8 @@ async function getSensors(req, res, next) {
     res.sensors = sensors
     next()
   }
+
+ 
 
 
 module.exports = router

@@ -109,7 +109,7 @@ Highcharts.chart('GaugeContainer', {
         const apitemp = data[1].value;
         point.update(apitemp);
         
-      }, 500);
+      }, 1000);
     }
   });
 
